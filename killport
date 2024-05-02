@@ -6,10 +6,10 @@ if [ -z "$1" ]; then
 fi
 
 # Assign the port number to the PORT variable
-local PORT=$1
+PORT=$1
 
 # Find the process that is listening on the given port
-local PID=$(sudo netstat -tunlp | grep ":$PORT " | awk '{ split($7,a,"/"); print a[1] }')
+PID=$(sudo netstat -tunlp | grep ":$PORT " | awk '{ split($7,a,"/"); print a[1] }')
 
 # Check if any PID was found
 if [ -z "$PID" ]; then
