@@ -14,7 +14,7 @@ local PID=$(sudo netstat -tunlp | grep ":$PORT " | awk '{ split($7,a,"/"); print
 # Check if any PID was found
 if [ -z "$PID" ]; then
     echo "No process is listening on port $PORT"
-    return 0
+    exit 0
 fi
 
 sudo kill -9 $PID
@@ -23,7 +23,7 @@ if [ $? -eq 0 ]; then
     echo "Process with PID $PID has been killed"
 else
     echo "Failed to kill the process with PID $PID"
-    return 1
+    exit 1
 fi
 
-return 0
+exit 0
