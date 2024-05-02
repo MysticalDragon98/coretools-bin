@@ -1,0 +1,29 @@
+#!/bin/bash
+# Check if the port number was provided as an argument
+if [ -z "$1" ]; then
+    echo "Usage: $0 <port_number>"
+    exit 1
+fi
+
+# Assign the port number to the PORT variable
+local PORT=$1
+
+# Find the process that is listening on the given port
+local PID=$(sudo netstat -tunlp | grep ":$PORT " | awk '{ split($7,a,"/"); print a[1] }')
+
+# Check if any PID was found
+if [ -z "$PID" ]; then
+    echo "No process is listening on port $PORT"
+    return 0
+fi
+
+sudo kill -9 $PID
+
+if [ $? -eq 0 ]; then
+    echo "Process with PID $PID has been killed"
+else
+    echo "Failed to kill the process with PID $PID"
+    return 1
+fi
+
+return 0
